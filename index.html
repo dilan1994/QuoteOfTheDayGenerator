@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quote Generator</title>
+
+    <style>
+        #quote-box{
+            width: 500px;
+            margin: 100px auto;
+            padding:  20px;
+            text-align: center;
+            background: #f8f8f8;
+        }
+        #quote{
+            font-size: 24px;
+            margin-bottom: 10px;
+
+        }
+
+        #author{
+            font-style: italic;
+        }
+
+        button{
+            padding: 10px 20px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+
+
+
+
+
+    </style>
+    
+</head>
+<body>
+
+    <div id="quote-box">
+        <p id="quote">Quote will appear here</p>
+        <p id="author">Author will appear here</p>
+        <button id="newQuote">New Quote</button>
+
+    </div>
+    
+    <div>
+        <button class="category-btn" data-category="all">All</button>
+        <button class="category-btn" data-category="life">Life</button>
+        <button class="category-btn" data-category="inspiration">Inspiration</button>
+        <button class="category-btn" data-category="success">Success</button>
+    </div>
+
+    <button id="favoriteBtn">❤️Add to Favorites</button>
+    <div id="favorites">
+        <h3>My Favorite Quotes</h3>
+        <div id="favorites-list"></div>
+    </div>
+
+    <script>
+
+
+        const quotes = [
+         {
+                text: "Life is what happens while you're busy making other plans.",
+                author: "John Lennon",
+                category: "life"
+            },
+            {
+                text: "The future belongs to those who believe in the beauty of their dreams.",
+                author: "Eleanor Roosevelt",
+                category: "inspiration"
+            },
+            {
+                text: "Success is not final, failure is not fatal.",
+                author: "Winston Churchill",
+                category: "success"
+            }
+        ];
+
+        function getRandomQuote(){
+            const randomNumber = Math.floor(Math.random() * quote.length);
+            return quote[randomNumber];
+
+        }
+
+        function displayQuote() {
+            const quote = getRandomQuote(); 
+
+            document.getElementById('quote').textContent = quote.text;
+            document.getElementById('author').textContent = "_ " + quote.author;
+            }
+
+        document.getElementById('newQuote').addEventListner('click', displayQuote);
+
+        displayQuote();
+
+        let currentCategory = 'all';
+        let favorites = [];
+
+
+        function getQuoteByCategory(category){
+            if (category === 'all'){
+                return quotes;
+            }
+            return quotes.filter()
+
+        }
+
+        function getRandomQuote() {
+            const filteredQuotes = getQuoteByCategory(currentCategory);
+            const randomNumber = Math.floor(Math.random() * filteredQuotes.length);
+            return filteredQuotes[randomNumber];
+        }
+
+
+
+    </script>
+    
+</body>
+</html>
