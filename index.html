@@ -3,69 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quote Generator</title>
+    <title>Beautiful Quote Generator</title>
 
     <style>
-        #quote-box{
-            width: 500px;
-            margin: 100px auto;
-            padding:  20px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #333;
+        }
+
+        /* Main quote container */
+        #quote-box {
+            max-width: 700px;
+            margin: 20px auto;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             text-align: center;
-            background: #f8f8f8;
-        }
-        #quote{
-            font-size: 24px;
-            margin-bottom: 10px;
-
         }
 
-        #author{
+        /* Quote text styling */
+        #quote {
+            font-size: 28px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            position: relative;
+            padding: 20px 40px;
+            color: #2d3748;
+        }
+
+        /* Quote marks */
+        #quote::before {
+            content: '"';
+            font-size: 60px;
+            color: #764ba2;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        /* Author styling */
+        #author {
             font-style: italic;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 20px;
         }
 
-        button{
-            padding: 10px 20px;
-            background: #4caf50;
-            color: white;
+        /* Button container */
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* Button styling */
+        button {
+            padding: 12px 25px;
             border: none;
+            border-radius: 50px;
             cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            color: white;
+            background: #764ba2;
         }
 
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
 
+        /* Category section */
+        #categories {
+            max-width: 700px;
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
 
+        .category-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
 
+        .category-btn.active {
+            background: white;
+            color: #764ba2;
+        }
 
+        /* Favorites section */
+        #favorites {
+            max-width: 700px;
+            margin: 40px auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
 
+        #favorites h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2d3748;
+            font-size: 24px;
+        }
+
+        .favorite-quote {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 15px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .favorite-quote:hover {
+            transform: translateY(-3px);
+        }
+
+        #favoriteBtn {
+            background: #ed64a6;
+        }
+
+        #favoriteBtn:hover {
+            background: #d53f8c;
+        }
     </style>
-    
 </head>
 <body>
-
+    <!-- Main quote display -->
     <div id="quote-box">
-        <p id="quote">Quote will appear here</p>
-        <p id="author">Author will appear here</p>
-        <button id="newQuote">New Quote</button>
-
+        <p id="quote">Welcome to Quote Generator</p>
+        <p id="author">Get Started</p>
+        <div class="btn-container">
+            <button id="newQuote">New Quote</button>
+            <button id="favoriteBtn">❤️ Add to Favorites</button>
+        </div>
     </div>
-    
-    <div>
-        <button class="category-btn" data-category="all">All</button>
+
+    <!-- Category buttons -->
+    <div id="categories">
+        <button class="category-btn active" data-category="all">All</button>
         <button class="category-btn" data-category="life">Life</button>
         <button class="category-btn" data-category="inspiration">Inspiration</button>
         <button class="category-btn" data-category="success">Success</button>
     </div>
 
-    <button id="favoriteBtn">❤️Add to Favorites</button>
+    <!-- Favorites section -->
     <div id="favorites">
         <h3>My Favorite Quotes</h3>
         <div id="favorites-list"></div>
     </div>
 
     <script>
-
-
+        // Quote database
         const quotes = [
-         {
+            {
                 text: "Life is what happens while you're busy making other plans.",
                 author: "John Lennon",
                 category: "life"
@@ -79,47 +185,111 @@
                 text: "Success is not final, failure is not fatal.",
                 author: "Winston Churchill",
                 category: "success"
+            },
+            {
+                text: "The only way to do great work is to love what you do.",
+                author: "Steve Jobs",
+                category: "success"
+            },
+            {
+                text: "Life is either a daring adventure or nothing at all.",
+                author: "Helen Keller",
+                category: "life"
             }
         ];
 
-        function getRandomQuote(){
-            const randomNumber = Math.floor(Math.random() * quote.length);
-            return quote[randomNumber];
-
-        }
-
-        function displayQuote() {
-            const quote = getRandomQuote(); 
-
-            document.getElementById('quote').textContent = quote.text;
-            document.getElementById('author').textContent = "_ " + quote.author;
-            }
-
-        document.getElementById('newQuote').addEventListner('click', displayQuote);
-
-        displayQuote();
-
+        // State management
         let currentCategory = 'all';
         let favorites = [];
 
-
-        function getQuoteByCategory(category){
-            if (category === 'all'){
+        // Get quotes by category
+        function getQuotesByCategory(category) {
+            if (category === 'all') {
                 return quotes;
             }
-            return quotes.filter()
-
+            return quotes.filter(quote => quote.category === category);
         }
 
+        // Get random quote
         function getRandomQuote() {
-            const filteredQuotes = getQuoteByCategory(currentCategory);
+            const filteredQuotes = getQuotesByCategory(currentCategory);
             const randomNumber = Math.floor(Math.random() * filteredQuotes.length);
             return filteredQuotes[randomNumber];
         }
 
+        // Display quote
+        function displayQuote() {
+            const quote = getRandomQuote();
+            document.getElementById('quote').textContent = quote.text;
+            document.getElementById('author').textContent = "- " + quote.author;
+        }
 
+        // Handle category selection
+        function handleCategoryClick(e) {
+            currentCategory = e.target.dataset.category;
+            
+            // Update active button
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            e.target.classList.add('active');
+            
+            displayQuote();
+        }
 
+        // Handle favorites
+        function toggleFavorite() {
+            const currentQuote = document.getElementById('quote').textContent;
+            const currentAuthor = document.getElementById('author').textContent;
+            
+            const quoteObject = {
+                text: currentQuote,
+                author: currentAuthor
+            };
+
+            const existingIndex = favorites.findIndex(fav => 
+                fav.text === quoteObject.text && fav.author === quoteObject.author
+            );
+
+            if (existingIndex === -1) {
+                favorites.push(quoteObject);
+                updateFavoritesList();
+                document.getElementById('favoriteBtn').textContent = '❤️ Added to Favorites';
+            }
+        }
+
+        // Update favorites display
+        function updateFavoritesList() {
+            const favoritesList = document.getElementById('favorites-list');
+            favoritesList.innerHTML = '';
+            
+            favorites.forEach(fav => {
+                const quoteDiv = document.createElement('div');
+                quoteDiv.classList.add('favorite-quote');
+                quoteDiv.innerHTML = `
+                    <p>${fav.text}</p>
+                    <small>${fav.author}</small>
+                `;
+                favoritesList.appendChild(quoteDiv);
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add category button listeners
+            document.querySelectorAll('.category-btn').forEach(button => {
+                button.addEventListener('click', handleCategoryClick);
+            });
+
+            // Add favorite button listener
+            document.getElementById('favoriteBtn').addEventListener('click', toggleFavorite);
+
+            // Add new quote button listener
+            document.getElementById('newQuote').addEventListener('click', displayQuote);
+
+            // Show initial quote
+            displayQuote();
+        });
     </script>
-    
 </body>
 </html>
